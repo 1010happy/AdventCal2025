@@ -1,1 +1,1 @@
-# DFKIAdventCal
+# AdventCal
