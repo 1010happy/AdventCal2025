@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>External JavaScript Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: lightgray;
+            text-align: center;
+            margin-top: 50px;
+        }
+        #message {
+            font-size: 20px;
+            margin-top: 20px;
+        }
+        #target {
+            width: 400px;
+            height: 400px;
+            border: 2px dashed #333;
+            margin-top: 20px;
+        }
+</style>
+    </style>
+</head>
+<body>
+    <img  id = "drag1"  src = "img.jpg"  alt = "spider logo"  draggable = "true"  ondragstart = "drag(event)" width=200 height=300>
+    
+    <div  id = "target"  ondrop = "drop(event)"  ondragover = "allowDrop(event)" ></div> 
+
+    <script > 
+    function allowDrop (ev)  { 
+    ev.preventDefault (); 
+    } 
+
+    function drag (ev)  { 
+    ev.dataTransfer.setData( 'text',ev.target.id ); 
+    } 
+
+    function  drop (ev)  { 
+    ev.preventDefault (); 
+    let data  =  ev.dataTransfer.getData( 'text' ); 
+    ev.target.appendChild(document.getElementById(data)); 
+    } 
+    </script>
+
+    <!-- <img  id = "drag2"  src = "2006_patrick_rudolph.gif"  draggable = "true"  ondragstart = "drag(event)" > 
+    <img  id = "drag3"  src = "2006-ani_kirsten-evers.gif"  draggable = "true"  ondragstart = "drag(event)" > -->
+
+    <!--
+    <h2>JavaScript Mini App</h2>
+    <select id="options">
+        <option value="">-- Choose an option --</option>
+        <option value="Option A">Option A</option>
+        <option value="Option B">Option B</option>
+        <option value="Option C">Option C</option>
+    </select>
+
+    <div id="message">No Selection Yet</div>
+    <div id="tester" style="width:600px;height:250px;"></div>
+
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script>
+	TESTER = document.getElementById('tester');
+	Plotly.newPlot( TESTER, [{
+	x: [1, 2, 3, 4, 5],
+	y: [1, 2, 4, 8, 16] }], {
+	margin: { t: 0 } } );
+</script> -->
+
+</body>
+</html>
