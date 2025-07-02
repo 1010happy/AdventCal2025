@@ -13,35 +13,30 @@
             font-size: 20px;
             margin-top: 20px;
         }
-        #target {
-            width: 400px;
-            height: 400px;
+        .drop_box {
+            display: inline-block;
+            width: 40px;
+            height: 20px;
             border: 2px dashed #333;
-            margin-top: 20px;
+            padding-right: 2px;
+            padding-left: 2px;
         }
 </style>
     </style>
 </head>
 <body>
-    <img  id = "drag1"  src = "img.jpg"  alt = "spider logo"  draggable = "true"  ondragstart = "drag(event)" width=200 height=300>
-    
-    <div  id = "target"  ondrop = "drop(event)"  ondragover = "allowDrop(event)" ></div> 
+    <img  id = "drag1"  src = "word1.png"  alt = "sentence"  draggable = "true"  ondragstart = "drag(event)" width=40 height=28>
+    <img  id = "drag1"  src = "word2.png"  alt = "missing"  draggable = "true"  ondragstart = "drag(event)" width=40 height=28>
 
-    <script > 
-    function allowDrop (ev)  { 
-    ev.preventDefault (); 
-    } 
+   <p>
+  Hello. This is a 
+  <span class="drop_box" ondrop="drop(event)" ondragover="allowDrop(event)"></span> 
+  . It has lots of 
+  <span class="drop_box" ondrop="drop(event)" ondragover="allowDrop(event)"></span> 
+  words.
+    </p>
 
-    function drag (ev)  { 
-    ev.dataTransfer.setData( 'text',ev.target.id ); 
-    } 
-
-    function  drop (ev)  { 
-    ev.preventDefault (); 
-    let data  =  ev.dataTransfer.getData( 'text' ); 
-    ev.target.appendChild(document.getElementById(data)); 
-    } 
-    </script>
+    <script type="text/javascript" src="test.js"></script>
 
     <!-- <img  id = "drag2"  src = "2006_patrick_rudolph.gif"  draggable = "true"  ondragstart = "drag(event)" > 
     <img  id = "drag3"  src = "2006-ani_kirsten-evers.gif"  draggable = "true"  ondragstart = "drag(event)" > -->
