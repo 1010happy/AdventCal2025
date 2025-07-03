@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>External JavaScript Example</title>
+    <title>Drag and Drop</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -21,46 +21,29 @@
             padding-right: 2px;
             padding-left: 2px;
         }
+        .word_container {
+            margin: auto;
+            width: 100px;
+            height: 30px;
+            border: 3px solid rgb(9, 91, 255);
+            background-color: rgb(250, 251, 189);
+        }
 </style>
     </style>
 </head>
 <body>
-    <img  id = "drag1"  src = "word1.png"  alt = "sentence"  draggable = "true"  ondragstart = "drag(event)" width=40 height=28>
-    <img  id = "drag1"  src = "word2.png"  alt = "missing"  draggable = "true"  ondragstart = "drag(event)" width=40 height=28>
-
+    <div class="word_container" ondrop="wordContainerDrop(event)" ondragover="allowDrop(event)">
+     <img  id = "drag1"  src = "word1.png"  alt = "sentence"  draggable = "true"  ondragstart = "drag(event)" width=40 height=28></img>
+     <img  id = "drag2"  src = "word2.png"  alt = "missing"  draggable = "true"  ondragstart = "drag(event)" width=40 height=28></img>
+    </div>
    <p>
   Hello. This is a 
-  <span class="drop_box" ondrop="drop(event)" ondragover="allowDrop(event)"></span> 
+  <span class="drop_box" id = "box1" ondragover="allowDrop(event)"></span> 
   . It has lots of 
-  <span class="drop_box" ondrop="drop(event)" ondragover="allowDrop(event)"></span> 
+  <span class="drop_box" id = "box2" ondragover="allowDrop(event)"></span> 
   words.
     </p>
 
     <script type="text/javascript" src="test.js"></script>
-
-    <!-- <img  id = "drag2"  src = "2006_patrick_rudolph.gif"  draggable = "true"  ondragstart = "drag(event)" > 
-    <img  id = "drag3"  src = "2006-ani_kirsten-evers.gif"  draggable = "true"  ondragstart = "drag(event)" > -->
-
-    <!--
-    <h2>JavaScript Mini App</h2>
-    <select id="options">
-        <option value="">-- Choose an option --</option>
-        <option value="Option A">Option A</option>
-        <option value="Option B">Option B</option>
-        <option value="Option C">Option C</option>
-    </select>
-
-    <div id="message">No Selection Yet</div>
-    <div id="tester" style="width:600px;height:250px;"></div>
-
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <script>
-	TESTER = document.getElementById('tester');
-	Plotly.newPlot( TESTER, [{
-	x: [1, 2, 3, 4, 5],
-	y: [1, 2, 4, 8, 16] }], {
-	margin: { t: 0 } } );
-</script> -->
-
 </body>
 </html>
