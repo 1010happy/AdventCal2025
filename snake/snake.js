@@ -31,6 +31,11 @@ const MODE = 2; //debugging
 var p_live = 0.0;
 var p_reward = 0.0;
 
+var slider_p_live = 0.0;
+var slider_p_reward = 0.0;
+
+var running = true;
+
 var snake = {
   x: start_x,
   y: start_y,
@@ -247,9 +252,9 @@ r_output.innerHTML = r_slider.value;
 
 r_slider.oninput = function () {
   r_output.innerHTML = this.value;
-  if(this.value == 0) p_reward = 0.0; //no reward
-  else if(this.value == 1) p_reward = 0.4; //50% chance of targetting reward
-  else if(this.value == 2) p_reward = 0.7; //70% chance of targetting reward
+  if(this.value == 0) slider_p_reward = 0.0; //no reward
+  else if(this.value == 1) slider_p_reward = 0.4; //50% chance of targetting reward
+  else if(this.value == 2) slider_p_reward = 0.7; //70% chance of targetting reward
 };
 
 /**************DeathPenaltys_slider*******************/
@@ -259,9 +264,9 @@ d_output.innerHTML = d_slider.value;
 
 d_slider.oninput = function () {
   d_output.innerHTML = this.value;
-  if(this.value == 0) p_live = 0.0; //no reward
-  else if(this.value == 1) p_live = 0.5; //50% chance of targetting reward
-  else if(this.value == 2) p_live = 1.0; //70% chance of targetting reward
+  if(this.value == 0) slider_p_live = 0.0; //no reward
+  else if(this.value == 1) slider_p_live = 0.5; //50% chance of targetting reward
+  else if(this.value == 2) slider_p_live = 1.0; //70% chance of targetting reward
 };
 
 /**************TimePenaltys_slider*******************/
@@ -271,9 +276,16 @@ t_output.innerHTML = t_slider.value;
 
 t_slider.oninput = function () {
   t_output.innerHTML = this.value;
-  if(this.value == 1) p_reward += 0.15; //no reward
-  else if(this.value == 2) p_reward += 0.15; //70% chance of targetting reward
+  if(this.value == 1) slider_p_reward += 0.15; //no reward
+  else if(this.value == 2) slider_p_reward += 0.15; //70% chance of targetting reward
 };
+
+/**********click button ************/
+function b_click(){
+  console.log("clc");
+  p_live = slider_p_live;
+  p_reward = slider_p_reward;
+}
 
 
 //Start game
