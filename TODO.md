@@ -1,2 +1,2 @@
-#snake (once confirmed as exercise):
-write in pauses and questions once kids have tried various combinations etc.
+## 1. if confirmed as exercise, snake further work:
+integrates questions for kids have (trying various combinations) etc.
