@@ -1,24 +1,17 @@
 
+document.querySelectorAll('.node').forEach(initialise)
 
-
-const lhsdot = document.getElementById("dot1")
-const rhsdot = document.getElementById("dot2")
-const lhsdot2 = document.getElementById("dot3")
-const rhsdot2 = document.getElementById("dot4")
-
-lhsdot.addEventListener("click", highlight);
-rhsdot.addEventListener("click", highlight); 
-lhsdot2.addEventListener("click", highlight);
-rhsdot2.addEventListener("click",highlight);
+function initialise(node) {
+    node.addEventListener("click", highlight);
+}
 
 var leftSelected = false;
 var rightSelected = false;
 var elemSelected = null;
-
-const connected = [];
+const connections = [];
 
 function addConnection(node1,node2,line_obj) {
-    connected.push({
+    connections.push({
         node1 : node1,
         node2 : node2,
         line : line_obj
@@ -26,26 +19,25 @@ function addConnection(node1,node2,line_obj) {
 }
 
 function removeConnection(node1,node2) {
-  const index = connected.findIndex(c =>
+  const index = connections.findIndex(c =>
     (c.node1 === node1 && c.node2 === node2) || (c.node1 === node2 && c.node2 === node1)
   );
 
   if (index !== -1) {
-    const connection = connected[index];
+    const connection = connections[index];
     connection.line.remove(); 
-    connected.splice(index, 1);
+    connections.splice(index, 1);
   }
 }
 
 function checkIfConnection(node1,node2) {
-    return connected.some(c =>
-    (c.node1 === node1 && c.node2 === node2) ||
-    (c.node1 === node2 && c.node2 === node1)
+    return connections.some(c =>
+    (c.node1 === node1 && c.node2 === node2) || (c.node1 === node2 && c.node2 === node1)
   )
 }
 
 function alreadyUsed(node) {
-    return connected.some(c => (c.node1 === node) || c.node2 === node)
+    return connections.some(c => (c.node1 === node) || c.node2 === node)
 }
 
 function insertLine(first_dot,second_dot) {
@@ -60,94 +52,43 @@ line.setAttribute("stroke", "black");
 line.setAttribute("stroke-width", "3");
 
 parent.insertBefore(line, parent.firstChild);
-addConnection(first_dot,second_dot,line)
+addConnection(first_dot,second_dot,line);
 }
 
-// probelm is passing in a copy so leftSelected/rightSelected not actually gettig altered
-// function LineNeeded(sideSelected, otherSide, sideNeeded, className, target, elemSelected) {
-//     if (sideSelected === true && otherSide === false) {
-//         if (className === sideNeeded){
-//             insertLine(elemSelected,target);
-//             sideSelected = false;
-//             elemSelected.setAttribute("stroke-width","0")
-//             elemSelected = null;
-//         } else {
-//             elemSelected.setAttribute("stroke-width","0")
-//             sideSelected = false;
-//         }
 
-//     }
-// }
+function controlLine(target,className) {
+    if ((leftSelected === true && rightSelected === false && className === "node rhs")
+        || (rightSelected === true && leftSelected === false && className === "node lhs")) {
+            if (checkIfConnection(elemSelected,target) === true) {
+                removeConnection(elemSelected,target) 
+        } else if (!alreadyUsed(elemSelected) && !alreadyUsed(target)) {
+                insertLine(elemSelected,target);
+        }
+    }
+}
+
 
 function highlight(event) {
 
     let className = event.target.className.baseVal;
 
+    // nothing has been selected yet
     if (leftSelected === false && rightSelected === false) {
         event.target.setAttribute("stroke-width", "3")
         elemSelected = event.target
-        if (className === "lhs") {
+        if (className === "node lhs") {
             leftSelected = true;
-        }   else {
+        } else {
                 rightSelected = true;
         }
-    } 
 
-    // else if (LineNeeded(leftSelected,rightSelected, "rhs",className,event.target,elemSelected)) {}
-    // else if (LineNeeded(rightSelected,leftSelected,"lhs",className,event.target,elemSelected)) {}
-
-    else if (leftSelected === true && rightSelected === false) {
-        if (className === "rhs"){
-            if (checkIfConnection(elemSelected,event.target) === true) {
-                removeConnection(elemSelected,event.target)
-                leftSelected = false;
-                elemSelected.setAttribute("stroke-width","0")
-                elemSelected = null;
-            } 
-            else if (alreadyUsed(elemSelected) || alreadyUsed(event.target)) {
-                console.log("already a line")
-                leftSelected = false;
-                elemSelected.setAttribute("stroke-width","0")
-                elemSelected = null;
-            } else {
-                insertLine(elemSelected,event.target);
-                leftSelected = false;
-                elemSelected.setAttribute("stroke-width","0")
-                elemSelected = null;
-            }
-        } else {
-            elemSelected.setAttribute("stroke-width","0")
-            leftSelected = false;
-            elemSelected = null;
-        }
-
-    }
-
-    else if (rightSelected === true && leftSelected === false) {
-        if (className === "lhs"){
-            if (checkIfConnection(elemSelected,event.target) === true) {
-                removeConnection(elemSelected,event.target)
-                rightSelected = false;
-                elemSelected.setAttribute("stroke-width","0")
-                elemSelected = null;
-            } 
-            else if (alreadyUsed(elemSelected) || alreadyUsed(event.target)) {
-                console.log("already a line")
-                rightSelected = false;
-                elemSelected.setAttribute("stroke-width","0")
-                elemSelected = null;
-            } else {
-                insertLine(elemSelected,event.target)
-                rightSelected = false;
-                elemSelected.setAttribute("stroke-width","0")
-                elemSelected = null;
-            }
-        } else {
-            elemSelected.setAttribute("stroke-width","0")
+    // second node has now been selected
+    } else {
+            controlLine(event.target,className)
             rightSelected = false;
-        }
-
+            leftSelected = false;
+            elemSelected.setAttribute("stroke-width","0")
+            elemSelected = null;
     }
-
 
 }
