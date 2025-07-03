@@ -1,0 +1,235 @@
+/**************snake game*******************/
+var canvas = document.getElementById('game');
+var context = canvas.getContext('2d');
+
+var grid = 16;
+var count = 0;
+var start_x = 160;
+var start_y = 160;
+var start_len = 3;
+var speed = grid;
+var fps_div = grid / 2;
+
+var LEFT = 37;
+var UP = 38;
+var RIGHT = 39;
+var DOWN = 40;
+
+var MODE = 0; 
+/*0 for keyboard control, 
+1 for all random, 
+2 for random with edge death avoidance
+3 for random with coiling death avoidance
+4 for head straight to the apple 
+5 for all together
+*/
+
+var p_live = 1.0;
+var p_reward = 1.0;
+
+var snake = {
+  x: start_x,
+  y: start_y,
+  direction: RIGHT,
+  dx: speed,
+  dy: 0,
+  cells: [],
+  maxCells: start_len
+};
+
+var apple = {
+  x: 320,
+  y: 320
+};
+
+function getRandomInt(min, max) { //max exclusive
+  return Math.floor(Math.random() * (max - min)) + min; //math.random >=0 <1
+}
+
+function randomDirection(a){
+  var i = getRandomInt(0, a.length);
+  switch(i){
+    case 0: return LEFT;
+    case 1: return UP;
+    case 2: return RIGHT;
+    case 3: return DOWN;
+    default: throw "direction out of bounds"; // shd not happen
+  }
+}
+
+function restart() {
+  snake.x = start_x;
+  snake.y = start_y;
+  snake.cells = [];
+  snake.maxCells = start_len;
+  snake.dx = speed;
+  snake.dy = 0;
+
+  apple.x = getRandomInt(0, 25) * grid;
+  apple.y = getRandomInt(0, 25) * grid;
+}
+
+function dirToCoords(d){ //have a direction that only updates 
+  if (d === LEFT) {
+    snake.dx = -speed;
+    snake.dy = 0;
+  } else if (d === UP) {
+    snake.dx = 0;
+    snake.dy = -speed;
+  } else if (d === RIGHT) {
+    snake.dx = speed; 
+    snake.dy = 0;
+  } else if (d === DOWN) {
+    snake.dx = 0;
+    snake.dy = speed;
+  }
+  return [snake.x + dx, snake.y + dy];
+}
+
+function checkEdgeDeath(x,y) {
+  if (x < 0 || x >= canvas.width ||
+      y < 0 || y >= canvas.height) {
+    return true;
+  }
+  return false;
+}
+
+function checkDeath(x,y){ // if new head in x,y will it die
+  if(checkEdgeDeath(x,y)) return true;
+  //else check all cells 
+
+}
+
+function updateDirection(d){ //only updates if there's actually a requested direction
+  if (d === LEFT && snake.dx === 0) { //if direction updated again before snake moves, die
+    snake.dx = -speed;
+    snake.dy = 0;
+  } else if (d === UP && snake.dy === 0) {
+    snake.dx = 0;
+    snake.dy = -speed;
+  } else if (d === RIGHT && snake.dx === 0) {
+    snake.dx = speed; 
+    snake.dy = 0;
+  } else if (d === DOWN && snake.dy === 0) {
+    snake.dx = 0;
+    snake.dy = speed;
+  }
+}
+
+function loop() {
+  requestAnimationFrame(loop);
+
+  if (++count < fps_div) return;
+  count = 0;
+
+  context.clearRect(0, 0, canvas.width, canvas.height);
+
+
+  if(MODE == 0 || MODE == 1){ 
+    if(MODE == 1) updateDirection(randomDirection([0,1,2,3])); //random directions
+    console.log("direction at", snake.dx, snake.dy);
+    snake.x += snake.dx;
+    snake.y += snake.dy;
+    if(checkEdgeDeath(snake.x,snake.y)) restart(); //its not checking self death?
+  }
+
+
+
+  //if empty, means all reward directions are death 
+
+  if(MODE == 2){
+    var live = Math.random() < p_live ? false:true; //avoid death this round?
+    var reward = Math.random() < p_reward ? false:true; //avoid life this round?
+    
+    var curdirs = [LEFT, UP, RIGHT, DOWN]; //LEFT UP RIGHT DOWN
+
+    if(live){ //remove death directions
+      if(snake.dx != 0){ //ie. moving left or right
+        
+        dirToCoords(UP)
+        dirToCoords(DOWN)
+
+
+      }
+
+      
+    }
+
+    //if empty (all die), js die
+
+    if(reward){
+      
+
+    }
+    //if all crash, die :) 
+    //else choose out of remaining directions
+  }
+  //when kids reach the first length eg. 5, die
+  //then let it keep going and be like "this is a simulation, so clearly its not actually learning" (eg. it will coil in on itself and die)
+
+
+  snake.cells.unshift({ x: snake.x, y: snake.y }); //add self in
+
+  if (snake.cells.length > snake.maxCells) { //remove anything
+    snake.cells.pop();
+  }
+
+  for (var i = 1; i < snake.cells.length; i++) { //self death
+    if (snake.x === snake.cells[i].x && snake.y === snake.cells[i].y) {
+      
+      console.log("Self-collision at", snake.x, snake.y, "against", snake.cells);
+      restart();
+    }
+  }
+
+
+  context.fillStyle = 'green';
+  snake.cells.forEach(function (cell, index) {
+    context.fillRect(cell.x, cell.y, grid - 1, grid - 1);
+
+    if (cell.x === apple.x && cell.y === apple.y) { //check apple obtaining
+      snake.maxCells++;
+      apple.x = getRandomInt(0, 25) * grid;
+      apple.y = getRandomInt(0, 25) * grid;
+    }
+
+  });
+
+
+
+  context.fillStyle = 'red';
+  context.fillRect(apple.x, apple.y, grid - 1, grid - 1);
+}
+
+if(MODE == 0){
+    document.addEventListener('keydown', function (e) {
+      updateDirection(e.which);
+   });
+}
+
+
+/**************speed_slider*******************/
+var slider = document.getElementById("speedSlider");
+var output = document.getElementById("speedVal");
+output.innerHTML = slider.value;
+
+slider.oninput = function () {
+  output.innerHTML = this.value;
+  fps_div = grid / parseFloat(this.value);  // ^ valu= faster
+};
+
+/**************death_slider*******************/
+var slider = document.getElementById("speedSlider");
+var output = document.getElementById("speedVal");
+output.innerHTML = slider.value;
+
+slider.oninput = function () {
+  output.innerHTML = this.value;
+  fps_div = grid / parseFloat(this.value);  // ^ valu= faster
+};
+
+//Start game
+requestAnimationFrame(loop);
+
+//interested students can do the actual version of this with
+// https://medium.com/@nancy.q.zhou/teaching-an-ai-to-play-the-snake-game-using-reinforcement-learning-6d2a6e8f3b1c
