@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/AdventCal2025/llm-jailbreak/index.html/static/css/main.c27f20c7.css",
-    "main.js": "/AdventCal2025/llm-jailbreak/index.html/static/js/main.66dcb9de.js",
-    "static/js/453.f3a14bd3.chunk.js": "/AdventCal2025/llm-jailbreak/index.html/static/js/453.f3a14bd3.chunk.js",
-    "static/media/santa.jpg": "/AdventCal2025/llm-jailbreak/index.html/static/media/santa.5042ad67300edea01330.jpg",
-    "static/media/snowflake_background.jpg": "/AdventCal2025/llm-jailbreak/index.html/static/media/snowflake_background.17611099fe841eaecdb9.jpg",
-    "static/media/user.jpg": "/AdventCal2025/llm-jailbreak/index.html/static/media/user.57e188d10721edc583b9.jpg",
-    "index.html": "/AdventCal2025/llm-jailbreak/index.html/index.html",
-    "main.c27f20c7.css.map": "/AdventCal2025/llm-jailbreak/index.html/static/css/main.c27f20c7.css.map",
-    "main.66dcb9de.js.map": "/AdventCal2025/llm-jailbreak/index.html/static/js/main.66dcb9de.js.map",
-    "453.f3a14bd3.chunk.js.map": "/AdventCal2025/llm-jailbreak/index.html/static/js/453.f3a14bd3.chunk.js.map"
+    "main.css": "/AdventCal2025/llm-jailbreak/static/css/main.b3a9e2a0.css",
+    "main.js": "/AdventCal2025/llm-jailbreak/static/js/main.1e503b47.js",
+    "static/js/453.f3a14bd3.chunk.js": "/AdventCal2025/llm-jailbreak/static/js/453.f3a14bd3.chunk.js",
+    "static/media/santa.jpg": "/AdventCal2025/llm-jailbreak/static/media/santa.5042ad67300edea01330.jpg",
+    "static/media/snowflake_background.jpg": "/AdventCal2025/llm-jailbreak/static/media/snowflake_background.17611099fe841eaecdb9.jpg",
+    "static/media/user.jpg": "/AdventCal2025/llm-jailbreak/static/media/user.57e188d10721edc583b9.jpg",
+    "index.html": "/AdventCal2025/llm-jailbreak/index.html",
+    "main.b3a9e2a0.css.map": "/AdventCal2025/llm-jailbreak/static/css/main.b3a9e2a0.css.map",
+    "main.1e503b47.js.map": "/AdventCal2025/llm-jailbreak/static/js/main.1e503b47.js.map",
+    "453.f3a14bd3.chunk.js.map": "/AdventCal2025/llm-jailbreak/static/js/453.f3a14bd3.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.c27f20c7.css",
-    "static/js/main.66dcb9de.js"
+    "static/css/main.b3a9e2a0.css",
+    "static/js/main.1e503b47.js"
   ]
 }
