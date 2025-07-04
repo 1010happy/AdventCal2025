@@ -1,0 +1,3 @@
+[submodule "llm-jailbreak"]
+	path = llm-jailbreak
+	url = https://github.com/1010happy/AdventCal2025
