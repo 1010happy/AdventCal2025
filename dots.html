@@ -3,17 +3,107 @@
 <head>
     <meta charset="UTF-8" />
     <title>Match the pairs</title>
+    <style>
+    body {
+      margin: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-family: sans-serif;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: 100px 300px 100px; 
+      gap: 20px;
+      align-items: center;
+    }
+
+    .column {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 500px;
+    }
+
+    .box {
+      background-color: #e0e0e0;
+      border: 1px solid #aaa;
+      padding: 10px;
+      text-align: center;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    svg {
+      width: 300px;
+      height: 500px;
+      background-color: #f9f9f9;
+    }
+    </style>
 </head>
 <body>
-    <div>
-        <svg id="svg" xmlns="http://www.w3.org/2000/svg" width = 500 height=500>
-        <circle id="dot1" class = "node lhs" r="45" cx="50" cy="50" fill="red" stroke="black" stroke-width="0"></circle>
-        <circle id="dot2" class = "node rhs" r="45" cx="350" cy="50" fill="green" stroke="black" stroke-width="0"></circle>
-        <circle id="dot3" class = "node lhs" r="45" cx="50" cy="150" fill="red" stroke="black" stroke-width="0"></circle>
-        <circle id="dot4" class = "node rhs" r="45" cx="350" cy="150" fill="green" stroke="black" stroke-width="0"></circle>
-        </svg>
+
+<div>
+  <div class="container">
+    <div class="column" id="lhs">
+      <div class="box">L1</div>
+      <div class="box">L2</div>
+      <div class="box">L3</div>
+      <div class="box">L4</div>
+      <div class="box">L5</div>
     </div>
 
-        <script type="text/javascript" src="dots.js"></script>
+    <svg id="svg">
+    </svg>
+
+    <div class="column" id="rhs">
+      <div class="box">R1</div>
+      <div class="box">R2</div>
+      <div class="box">R3</div>
+      <div class="box">R4</div>
+      <div class="box">R5</div>
+    </div>
+  </div>
+</div>
+  <div>
+    <button>Reset</button>
+  </div>
+
+
+<script>
+    // generates circle for svg section
+        const radius = 15;
+        const lhs_x = 20;
+        const rhs_x = 280;
+        const fill_colour = "red"
+        const starting_y = 35.66;
+        const svg = document.getElementById("svg")
+        const spacing = 107 // box height 71.66, and total is 500 so each gap is 35.425 (hence 71.6 + 35.4)
+
+        for (let j = 0; j < 2; j++) {
+            var classTag = "node lhs"
+            var current_x = lhs_x;
+            if (j === 1) {
+                classTag = "node rhs";
+                current_x = rhs_x
+            }
+            for (let i = 0; i < 5; i++) {
+                const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                circle.setAttribute("cx", current_x );
+                circle.setAttribute("cy", starting_y + i * 107);
+                circle.setAttribute("r", radius);
+                circle.setAttribute("fill", fill_colour);
+                circle.setAttribute("class",classTag)
+                circle.setAttribute("stroke","black")
+                circle.setAttribute("stroke-width","0")
+                svg.appendChild(circle);
+    }
+}
+    </script>
+    <script type="text/javascript" src="dots.js"></script>
 </body>
 </html>
