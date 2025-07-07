@@ -10,6 +10,12 @@ const NODETYPE_NO = 5;
 const HIGHLIGHT = "3px";
 const NOHIGHLIGHT = "1px"
 
+const OPTIONS = new Map([
+  [BLOCKTYPE_START, ["are we there yet"]],
+  [BLOCKTYPE_BODY, ["obstacle in center", "obstacle in left", "obstacle in right"]],
+  [BLOCKTYPE_END, ["move left", "move right", "move center"]]
+]);
+
 let curWaiting = null;
 let connections = [];
 
@@ -18,6 +24,7 @@ class Node{
     this.type = type;
 
     this.parent_id = parent_id;
+    this.line_id = null;
     if(type == NODETYPE_PARENT)this.id = (parent_id + "_parent");
     else if (type == NODETYPE_YES) this.id = (parent_id + "_yes");
     else this.id = (parent_id + "_no");
@@ -54,24 +61,108 @@ class block {
 
 // let //can reval but not redeclare (var can be redeclared accidentally), const is ur normal let
 
-// function make_ddd(id, optionsArray){
-//   let div = document.createElement("div")
-//   div.id = id;
-//   div.setAttribute("class", "draggable-select");
-//   // dispatchEvent.classList.add("draggable-select"); //class
 
-//   let sel = document.createElement("select");
-//   div.appendChild(sel) // select
-//   for(var i = 0; i < optionsArray.length; i++){
-//     let opt = document.createElement("option");
-//     opt.value = optionsArray[i];
-//     opt.textContent = optionsArray[i];
-//     sel.appendChild(opt);
-//   }
+function make_ddd(id, blocktype = BLOCKTYPE_BODY){;
+  let optionsArray = OPTIONS.get(blocktype); //setting blocktype = default BLOCKTYPE_BODY makes this undefined?
+;  let div = Object.assign(document.createElement("div"), { id, className: "draggable-select" });
 
-//   document.body.appendChild(div);
-// }
+  if(blocktype != BLOCKTYPE_START) {
+    let d = Object.assign(document.createElement("div"), {id: id+"_parent", className: "parent-node" });
+    d.textContent = "then"
+    div.append(d);
+  }
 
+  d = Object.assign(document.createElement("div"), {id: id+"_mover", className: "mover" });
+  d.textContent = "move"
+  div.append(d);
+
+  let div_dropdown = Object.assign(document.createElement("div"), {id:(id+"_dropdown")});
+    let sel = document.createElement("select");
+    for(var i = 0; i < optionsArray.length; i++){
+      let opt = document.createElement("option");
+      opt.value = optionsArray[i];
+      opt.textContent = optionsArray[i];
+      sel.appendChild(opt);
+    }
+  div_dropdown.append(sel) // select
+  div.append(div_dropdown);
+
+  if(blocktype != BLOCKTYPE_END){
+    d = Object.assign(document.createElement("div"), {id: id+"_no", className: "no-node" });
+    d.textContent = "no";
+    div.append(d);
+    d = Object.assign(document.createElement("div"), {id: id+"_yes", className: "yes-node" });
+    d.textContent = "yes";
+    div.append(d);
+  }
+  
+  document.body.append(div);
+}
+
+// const $line = $("#line"); //ie. id "line"
+
+function update_line(node){
+  if(node.partner != null && node.line_id != null) { //update
+    console.log("updating" + node.type)
+    let $line = $("#" + node.line_id);
+    let rect = node.element.getBoundingClientRect()
+    let x1 = rect.left + rect.width / 2;
+    let y1 = rect.top + rect.height / 2;
+
+    rect = node.partner.element.getBoundingClientRect();
+    let x2 = rect.left + rect.width / 2;
+    let y2 = rect.top + rect.height / 2; 
+
+    var length = Math.sqrt(((x1 - x2) * (x1 - x2)) + ((y1 - y2) * (y1 - y2)));
+    var angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+    var transform = 'rotate(' + angle + 'deg)';
+
+    offsetX = (x1 > x2) ? x2 : x1;
+    offsetY = (y1 > y2) ? y2 : y1;
+    
+    $line.css({
+        'position': 'absolute',
+        '-webkit-transform': transform,
+        '-moz-transform': transform,
+        'transform': transform
+      })
+      .width(length)
+      .offset({
+        left: offsetX,
+        top: offsetY
+    });
+  }
+  // else console.log("partner or line does not exist");
+}
+
+function create_line(node){
+  const newLine = document.createElement("div");
+  newLine.id = node.id + "_line";
+  newLine.style.position = "absolute";
+  newLine.style.height = "2px"; // Thin horizontal line
+  newLine.style.backgroundColor = "black";
+  newLine.style.transformOrigin = "0 0"; // So rotation pivots from top-left
+
+  newLine.id = node.id+"_line";
+
+  node.line_id = newLine.id;
+  node.partner.line_id = newLine.id;
+
+  document.body.appendChild(newLine); //line now exists
+
+  console.log(node.line_id + node.partner);
+  update_line(node)
+}
+
+function destroy_line(node){
+  let line_id = node.id+"_line";
+  if(document.getElementById(line_id) == null) line_id = node.partner.id +"_line";
+  let line = document.getElementById(line_id);
+
+  line.remove();
+  node.partner.line_id = null;
+  node.line_id = null;
+}
 
 function highlight_init(node){
 
@@ -79,18 +170,14 @@ function highlight_init(node){
   (node.element).addEventListener("mousedown", (e) => {
     if(!node.isSelected){
       if(curWaiting === null){
-        console.log("curWaiting set" + node.id);
         curWaiting = node;
         node.isSelected = true;
-        node.element.style.borderWidth = "10px";//HIGHLIGHT;
+        node.element.style.borderWidth = HIGHLIGHT;
 
       }else{ 
-        console.log(curWaiting.parent_id + " " + node.parent_id);
-        console.log(curWaiting.type + " " + node.type);
         if((curWaiting.parent_id != node.parent_id) && //can match 
          (((curWaiting.type === NODETYPE_PARENT) && (node.type === NODETYPE_NO || node.type === NODETYPE_YES)) || 
           ((curWaiting.type === NODETYPE_NO || curWaiting.type === NODETYPE_YES) && node.type === NODETYPE_PARENT))){
-            console.log("paired" + node.id);
             //valid match
             node.isSelected = true;
             node.partner = curWaiting;
@@ -98,17 +185,21 @@ function highlight_init(node){
 
             curWaiting.partner = node;
             curWaiting = null;
+
+            create_line(node);
         }
       }
     } else { //node was selected
       if(curWaiting == node){ //it is the waiting node
-        console.log("waiting undone" + node.id);
+        // console.log("waiting undone" + node.id);
         node.isSelected = false;
         curWaiting = null;
         node.element.style.borderWidth = NOHIGHLIGHT;
 
-      } else { //it was paired
-        console.log("paired" + node.id + node.partner.element.id);
+      } else { //it was paired (unpair)
+        // console.log("paired" + node.id + node.partner.element.id);
+        
+        destroy_line(node);
         node.element.style.borderWidth = NOHIGHLIGHT;
         node.partner.element.style.borderWidth = NOHIGHLIGHT;
 
@@ -145,6 +236,10 @@ function ddd_init(block){
     if (isDragging) {
       moveTarget.style.left = e.clientX - offsetX + "px";
       moveTarget.style.top = e.clientY - offsetY + "px";
+
+      update_line(block.parentNode);
+      update_line(block.noNode);
+      update_line(block.yesNode);
     }
   });
 
@@ -165,9 +260,15 @@ function ddd_init(block){
 }
 
 //eg.
-// make_ddd("block1", ["Apples", "Bananas", "Oranges"]);
-// make_ddd("block2", ["Option A", "Option B", "Option C"]);
-const block1 = new block("block1", BLOCKTYPE_BODY);
-ddd_init(block1);
-const block2 = new block("block2", BLOCKTYPE_BODY);
-ddd_init(block2);
+function make_block(id, blocktype){
+  make_ddd(id, blocktype);
+  const blocke = new block(id, blocktype);
+  ddd_init(blocke);
+}
+
+make_block("head", BLOCKTYPE_START);
+
+make_block("block1", BLOCKTYPE_BODY);
+make_block("block2", BLOCKTYPE_BODY);
+
+make_block("end", BLOCKTYPE_END);

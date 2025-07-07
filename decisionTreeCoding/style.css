@@ -1,4 +1,4 @@
-.draggable-select {
+.draggable-select { 
     position: absolute;
     top: 100px;
     left: 100px;
@@ -16,10 +16,7 @@
 .mover{
   border: 1px solid black;
   background-color: #8d8d8d;
-  /* width: 10px;
-  height: 10px; */
 
-  /* centralize */
   margin-left: auto;
   margin-right: auto;
 }
@@ -28,10 +25,7 @@
 .parent-node{
   border: 1px solid black;
   background-color: #8d8d8d;
-  /* width: 10px;
-  height: 10px; */
 
-  /* centralize */
   margin-left: auto;
   margin-right: auto;
 }
@@ -49,4 +43,12 @@
   background-color: #9fffa2;
   position: absolute;
   right: 0;
+}
+
+.line {
+  width: 1px;
+  height: 1px;
+  background-color: black;
+  position: absolute;
+  z-index: -1; /* put line behind the boxes */
 }
