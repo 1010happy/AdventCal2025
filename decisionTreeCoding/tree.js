@@ -12,8 +12,8 @@ const NOHIGHLIGHT = "1px"
 
 const OPTIONS = new Map([
   [BLOCKTYPE_START, ["are we there yet"]],
-  [BLOCKTYPE_BODY, ["obstacle in center", "obstacle in left", "obstacle in right"]],
-  [BLOCKTYPE_END, ["move left", "move right", "move center"]]
+  [BLOCKTYPE_BODY, ["obstacle on left?", "obstacle on right?"]],
+  [BLOCKTYPE_END, ["move left", "move right", "stop"]]
 ]);
 
 let curWaiting = null;
@@ -103,15 +103,18 @@ function make_ddd(id, blocktype = BLOCKTYPE_BODY){;
 
 function update_line(node){
   if(node.partner != null && node.line_id != null) { //update
-    console.log("updating" + node.type)
     let $line = $("#" + node.line_id);
-    let rect = node.element.getBoundingClientRect()
-    let x1 = rect.left + rect.width / 2;
-    let y1 = rect.top + rect.height / 2;
 
-    rect = node.partner.element.getBoundingClientRect();
+    parent_node = (node.type == NODETYPE_PARENT)? node : node.partner;
+    child_node = (node.type == NODETYPE_PARENT)? (node.partner) : node;
+
+    let rect = parent_node.element.getBoundingClientRect()
+    let x1 = rect.left + rect.width / 2;
+    let y1 = rect.top;
+
+    rect =  child_node.element.getBoundingClientRect();
     let x2 = rect.left + rect.width / 2;
-    let y2 = rect.top + rect.height / 2; 
+    let y2 = rect.top + rect.height; 
 
     var length = Math.sqrt(((x1 - x2) * (x1 - x2)) + ((y1 - y2) * (y1 - y2)));
     var angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
@@ -271,4 +274,7 @@ make_block("head", BLOCKTYPE_START);
 make_block("block1", BLOCKTYPE_BODY);
 make_block("block2", BLOCKTYPE_BODY);
 
-make_block("end", BLOCKTYPE_END);
+make_block("end1", BLOCKTYPE_END);
+make_block("end2", BLOCKTYPE_END);
+make_block("end3", BLOCKTYPE_END);
+make_block("end4", BLOCKTYPE_END);
