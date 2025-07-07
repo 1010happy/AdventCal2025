@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Chart.js example</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.5.0/math.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.0/dist/chart.umd.min.js"></script>
+    <script src="acquisitions.js" type="module"></script>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <h1>Hello</h1>
+    <div style="width: 800px;"><canvas id="plot"></canvas></div>
+  
+<div class="container">
+    <input type="number" id="degree" placeholder="Enter a number" min="0" max="4" />
+    <!-- need to make max depend on the number of datapoints (might have to move to javascript?) -->
+
+    <button id="submit_button">Submit</button>
+  </div>
+  </body>
+</html>
