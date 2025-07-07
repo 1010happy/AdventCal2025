@@ -1,0 +1,7 @@
+.draggable-select {
+    position: absolute;
+    top: 100px;
+    left: 100px;
+    cursor: move;
+    padding: 10px;
+  }

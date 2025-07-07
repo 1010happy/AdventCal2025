@@ -76,33 +76,33 @@
 
 <script>
     // generates circle for svg section
-        const radius = 15;
-        const lhs_x = 20;
-        const rhs_x = 280;
-        const fill_colour = "red"
-        const starting_y = 35.66;
-        const svg = document.getElementById("svg")
-        const spacing = 107 // box height 71.66, and total is 500 so each gap is 35.425 (hence 71.6 + 35.4)
+      const radius = 15;
+      const lhs_x = 20;
+      const rhs_x = 280;
+      const fill_colour = "red"
+      const starting_y = 35.66;
+      const svg = document.getElementById("svg")
+      const spacing = 107 // box height 71.66, and total is 500 so each gap is 35.425 (hence 71.6 + 35.4)
 
-        for (let j = 0; j < 2; j++) {
-            var classTag = "node lhs"
-            var current_x = lhs_x;
-            if (j === 1) {
-                classTag = "node rhs";
-                current_x = rhs_x
-            }
-            for (let i = 0; i < 5; i++) {
-                const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-                circle.setAttribute("cx", current_x );
-                circle.setAttribute("cy", starting_y + i * 107);
-                circle.setAttribute("r", radius);
-                circle.setAttribute("fill", fill_colour);
-                circle.setAttribute("class",classTag)
-                circle.setAttribute("stroke","black")
-                circle.setAttribute("stroke-width","0")
-                svg.appendChild(circle);
-    }
-}
+      for (let j = 0; j < 2; j++) {
+          var classTag = "node lhs"
+          var current_x = lhs_x;
+          if (j === 1) {
+              classTag = "node rhs";
+              current_x = rhs_x
+          }
+          for (let i = 0; i < 5; i++) {
+              const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+              circle.setAttribute("cx", current_x );
+              circle.setAttribute("cy", starting_y + i * 107);
+              circle.setAttribute("r", radius);
+              circle.setAttribute("fill", fill_colour);
+              circle.setAttribute("class",classTag)
+              circle.setAttribute("stroke","black")
+              circle.setAttribute("stroke-width","0")
+              svg.appendChild(circle);
+          }
+        }
     </script>
     <script type="text/javascript" src="dots.js"></script>
 </body>
