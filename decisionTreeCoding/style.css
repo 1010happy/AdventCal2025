@@ -16,6 +16,10 @@
 .mover{
   border: 1px solid black;
   background-color: #8d8d8d;
+  /* width: 10px;
+  height: 10px; */
+
+  /* centralize */
   margin-left: auto;
   margin-right: auto;
 }
