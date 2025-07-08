@@ -12,7 +12,6 @@ const degree_input = document.getElementById('degree')
 function handleClick() {
     const degree = document.getElementById('degree').value;
     plotLeastSquares(degree)
-    console.log(degree)
 }
 
 function penMode() {
@@ -106,6 +105,7 @@ function alterDataPoint(event) {
     if (!addedPolynomial) {
     document.getElementById("degree").max = chart.data.datasets.length - 1;
     } else {document.getElementById("degree").max = chart.data.datasets.length - 2}
+    // accounts for the extra dataset added when we plot the polynomial
 
 }
 
@@ -121,7 +121,6 @@ function checkDeleting(x,y) {
       }
   })
     pointsToRemove.forEach((item) => {
-      console.log(item)
       chart.data.datasets.splice(item,1)
   })
 }
@@ -150,9 +149,8 @@ function polyCalc(x,degree) {
 
     const result = math.qr(m) // returns full QR so we need to convert Q/R matrices
     const R = result.R.slice(0,(Number(degree)+1))
-    let Q = smallQ(result.Q,degree)
-    let coefficients = math.multiply(math.inv(R),math.multiply(Q,y_data))
-    console.log(coefficients)
+    let Q_T = smallQ(result.Q,degree)
+    let coefficients = math.multiply(math.inv(R),math.multiply(Q_T,y_data))
 
     let total = 0;
     let exponented = 1;
