@@ -33,6 +33,8 @@ class Node{
     this.isSelected = false;
 
     this.partner = null;
+
+    //this.value = null; TODO if code is used (store selected dropdown value qn)
   }
 }
 
@@ -167,7 +169,7 @@ function destroy_line(node){
   node.line_id = null;
 }
 
-function highlight_init(node){
+function select_init(node){ 
 
   //block.nodetype is selected = false and true
   (node.element).addEventListener("mousedown", (e) => {
@@ -253,12 +255,12 @@ function ddd_init(block){
 
   //init yes no parent selection
   if(hasParent){
-    highlight_init(block.parentNode);
+    select_init(block.parentNode);
   }
 
   if(hasKids){
-    highlight_init(block.noNode);
-    highlight_init(block.yesNode);
+    select_init(block.noNode);
+    select_init(block.yesNode);
   }
 }
 

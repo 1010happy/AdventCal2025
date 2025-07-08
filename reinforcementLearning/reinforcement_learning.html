@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maze of Magical Cats</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #maze-container {
+            display: grid;
+            grid-template-columns: repeat(5, 60px);
+            grid-gap: 5px;
+            margin: 20px;
+        }
+        .tile {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #333;
+            font-size: 1.5em;
+            background-color: white;
+            transition: background-color 0.3s;
+        }
+        .robot { background-color: lightblue; }
+        .closer { background-color: #a4f7a4; } /* Greenish for moving closer */
+        .hit-cat { background-color: #f78b8b; } /* Reddish when hitting a cat */
+        .goal { background-color: #ffff9b; } /* Glowing color for treasure */
+        #controls {
+            margin-top: 20px;
+        }
+        #status {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Maze of Magical Cats</h1>
+<p>Help Bob the Robot navigate the maze to find the treasure! Use the arrow keys or buttons to move.</p>
+
+<div id="maze-container"></div>
+
+<div id="controls">
+    <button id="up">Up</button>
+    <button id="left">Left</button>
+    <button id="right">Right</button>
+    <button id="down">Down</button>
+</div>
+
+<div id="status">Score: 0</div>
+
+<script src="script.js"></script>
+</body>
+</html>
