@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Chart.js example</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.5.0/math.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.0/dist/chart.umd.min.js"></script>
+    <script src="functionality.js" type="module"></script>
+    <link rel="stylesheet" href="style.css">
+  </head>
+
+  <body>
+    <div style="width: 1000px;"><canvas id="plot"></canvas></div>
+    <div id="graph tools">
+      <button id="pen">Pen</button>
+      <button id="rubber">Rubber</button>
+    </div>
+<div id = "submission" class="container">
+    <input type="number" id="degree" placeholder="Enter a number" min="0" onKeyDown="return false" />
+    <button id="submit_button">Submit</button>
+  </div>
+  </body>
+</html>
